@@ -3,7 +3,7 @@ import pygame
 
 
 # def draw_some(screen):
-#     x, y = 25, 50
+#     x, y = 10, 620
 #     d_range = max(abs(x), abs(y))
 #
 #     # square
@@ -64,6 +64,13 @@ def dda_line(x1, y1, x2, y2, color):
         y1 += dy
 
 
+def draw_arrow():
+    for i in range(20):
+        dda_line(10+i, 640, 20, 620, (0, 0, 0))
+    for i in range(20):
+        dda_line(10+i, 650, 20, 670, (0, 0, 0))
+
+
 def bresenham_line(screen, x1, y1, x2, y2, color):
     # f = False
     # if (x2-x1) < 0 or (y2-y1) < 0:
@@ -94,7 +101,7 @@ def bresenham_line(screen, x1, y1, x2, y2, color):
         err += dy/dx if dx > dy else dx/dy
 
 
-def bezier_curve(x1, y1, x2, y2, x3, y3, x4, y4):
+def bezier_curve(x1, y1, x2, y2, x3, y3, x4, y4, n):
     ax = 3*x2 + x4 - 3*x3 - x1
     bx = 3*x1 - 6*x2 + 3*x3
     cx = 3*x2 - 3*x1
@@ -106,24 +113,43 @@ def bezier_curve(x1, y1, x2, y2, x3, y3, x4, y4):
     t = 0
     points = list()
     points.append((round(x1), round(y1)))
-    for _ in range(N):
-        t += 1/N
+    for _ in range(n):
+        t += 1/n
         xt = ax * (t**3) + bx * (t**2) + cx * t + dx
         yt = ay * (t**3) + by * (t**2) + cy * t + dy
         points.append((round(xt), round(yt)))
     for i in range(len(points)-1):
         print(points[i][0], points[i][1], points[i+1][0], points[i+1][1])
         dda_line(points[i][0], points[i][1], points[i+1][0], points[i+1][1], (0, 0, 0))
-    # print(points)
-    pass
+
+
+def draw(x1, y1, x2, y2, n):
+    Xc, Yc = round(x1 + (x2 - x1) / 2), round(y1 + (y2 - y1) / 2)
+    r = round(((x2 - x1) ** 2 + (y2 - y1) ** 2) ** 0.5 / 2)
+    x3, x4 = round(x2 + r / 2), round(x1 - r / 2)
+    y3, y4 = y1, y2
+    dda_line(x1, y1, x2, y2, (0, 0, 255))
+    dda_line(x1, y1, x3, y3, (0, 0, 255))
+    dda_line(x2, y2, x4, y4, (0, 0, 255))
+    dda_line(x1, y1, x4, y4, (0, 0, 255))
+    dda_line(x2, y2, x3, y3, (0, 0, 255))
+    dda_line(x3, y3, x4, y4, (0, 0, 255))
+    print(Xc, Yc, r)
+    my_circle(Xc, Yc, r)
+    bezier_curve(x1, y1, x3, y3, x4, y4, x2, y2, n)
+
+
+def gui(n):
+    screen.fill((255, 255, 255))
+    screen.blit(button_font.render("Clear", True, (0, 0, 0)), (580, 620))
+    screen.blit(button_font.render(str(n), True, (0, 0, 0)), (50, 620))
+    draw_arrow()
 
 
 def main():
-    pygame.init()
-    clock = pygame.time.Clock()
-    # draw_some(screen)
     run = True
-    first = True
+    first = 1
+    n = 25
     while run:
         clock.tick(30)
         x, y = pygame.mouse.get_pos()
@@ -132,33 +158,40 @@ def main():
                 run = False
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 # x, y = event.pos
-                if first:
-                    x1, y1 = event.pos
-                    print(x1, y1)
-                    first = False
+                if first % 2 != 0:
+                    x, y = event.pos
+                    if x > 580 and y > 620:
+                        n = 25
+                        gui(n)
+                    elif 10 < x < 30 and 620 < y < 640:
+                        screen.blit(button_font.render(str(n), True, (255, 255, 255)), (50, 620))
+                        n += 1
+                        screen.blit(button_font.render(str(n), True, (0, 0, 0)), (50, 620))
+                        if first == 3:
+                            gui(n)
+                            draw(x1, y1, x2, y2, n)
+                    elif 10 < x < 30 and 650 < y < 670:
+                        screen.blit(button_font.render(str(n), True, (255, 255, 255)), (50, 620))
+                        n -= 1
+                        screen.blit(button_font.render(str(n), True, (0, 0, 0)), (50, 620))
+                        if first == 3:
+                            gui(n)
+                            draw(x1, y1, x2, y2, n)
+                    else:
+                        x1, y1 = x, y
+                        first = 2
                 else:
                     x2, y2 = event.pos
-                    print(x2, y2)
-                    Xc, Yc = round(x1+(x2-x1)/2), round(y1+(y2-y1)/2)
-                    r = round(((x2-x1)**2 + (y2-y1)**2) ** 0.5 / 2)
-                    x3, x4 = round(x2+r/2), round(x1 - r/2)
-                    y3, y4 = y1, y2
-                    dda_line(x1, y1, x2, y2, (0, 0, 255))
-                    dda_line(x1, y1, x3, y3, (0, 0, 255))
-                    dda_line(x2, y2, x4, y4, (0, 0, 255))
-                    dda_line(x1, y1, x4, y4, (0, 0, 255))
-                    dda_line(x2, y2, x3, y3, (0, 0, 255))
-                    dda_line(x3, y3, x4, y4, (0, 0, 255))
-                    print(Xc, Yc, r)
-                    my_circle(Xc, Yc, r)
-                    bezier_curve(x1, y1,  x3, y3, x4, y4, x2, y2)
-                    first = True
-        pygame.display.update()
+                    draw(x1, y1, x2, y2, n)
+                    first = 3
+        pygame.display.flip()
 
 
 if __name__ == "__main__":
+    pygame.init()
+    clock = pygame.time.Clock()
     screen = pygame.display.set_mode((700, 700))
-    screen.fill((255, 255, 255))
-    N = 25
+    button_font = pygame.font.SysFont('arial', 50)
+    gui(25)
     main()
 
