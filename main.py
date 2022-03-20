@@ -92,7 +92,7 @@ def draw(x1, y1, x2, y2, n):
 
 
 def gui(n):
-    """The gui function, updating the screen at starts, and after every Bezier curve number of lines change"""
+    """The gui function, updating the screen at start, and after every Bezier curve number of lines change"""
     screen.fill((255, 255, 255))
     screen.blit(button_font.render("Clear", True, (0, 0, 0)), (480, 520))
     screen.blit(button_font.render(str(n), True, (0, 0, 0)), (50, 520))
@@ -111,8 +111,8 @@ def main():
             if event.type == pygame.QUIT:
                 run = False
             elif event.type == pygame.MOUSEBUTTONDOWN:
+                x, y = event.pos
                 if click != "second":
-                    x, y = event.pos
                     if x > 480 and y > 520:
                         n = 25
                         gui(n)
@@ -134,7 +134,7 @@ def main():
                         x1, y1 = x, y
                         click = "second"
                 else:
-                    x2, y2 = event.pos
+                    x2, y2 = x, y
                     draw(x1, y1, x2, y2, n)
                     click = "modify"
         pygame.display.flip()
