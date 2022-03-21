@@ -110,7 +110,7 @@ def draw_arrow():
 
 def gui(n):
     """The gui function, updating the screen at start,
-       and after every Bezier curve number of lines change"""
+       and after every screen clear"""
     screen.fill(WHITE)
     screen.blit(button_font.render("Clear", True, BLACK), (480, 520))
     screen.blit(copy_font.render("Made by Liran Michaelov and Alona Rozner ©", True, BLACK), (370, 580))
