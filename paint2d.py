@@ -168,8 +168,6 @@ if __name__ == "__main__":
     pygame.init()
     clock = pygame.time.Clock()
     screen = pygame.display.set_mode((600, 600))
-    Icon = pygame.image.load('src/icon.png')
-    pygame.display.set_icon(Icon)
     pygame.display.set_caption("Paint2D")
     button_font = pygame.font.SysFont('arial', 50)
     copy_font = pygame.font.SysFont('arial', 14)
