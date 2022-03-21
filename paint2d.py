@@ -113,6 +113,7 @@ def gui(n):
        and after every Bezier curve number of lines change"""
     screen.fill(WHITE)
     screen.blit(button_font.render("Clear", True, BLACK), (480, 520))
+    screen.blit(copy_font.render("Made by Liran Michaelov and Alona Rozner ©", True, BLACK), (370, 580))
     screen.blit(button_font.render(str(n), True, BLACK), (50, 520))
     draw_arrow()
 
@@ -167,7 +168,11 @@ if __name__ == "__main__":
     pygame.init()
     clock = pygame.time.Clock()
     screen = pygame.display.set_mode((600, 600))
+    Icon = pygame.image.load('src/icon.png')
+    pygame.display.set_icon(Icon)
+    pygame.display.set_caption("Paint2D")
     button_font = pygame.font.SysFont('arial', 50)
+    copy_font = pygame.font.SysFont('arial', 14)
     gui(25)
     main()
 
