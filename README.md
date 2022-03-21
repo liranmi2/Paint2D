@@ -10,4 +10,4 @@ You may change the number of lines on the Bezier curve by clicking the up/down a
 
 Executable file is under `dist` library
 
-<a href="#"><img src="https://user-images.githubusercontent.com/15235924/159234853-d6fcd934-eabf-4a59-a412-39437e0393df.png" width="450" alt="screenshot"></a>
+<img src="https://user-images.githubusercontent.com/15235924/159234853-d6fcd934-eabf-4a59-a412-39437e0393df.png" width="450" alt="screenshot">
