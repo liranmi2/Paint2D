@@ -145,12 +145,10 @@ def main():
                     draw(x1, y1, x2, y2, n)
                     click = "modify"
                 else:
-                    if y < 520:
-                        x1, y1 = x, y
-                        click = "second"
-                    elif x > 480 and y > 520:
+                    if x > 480 and y > 520:
                         # if the clear button clicked, redraw an empty screen
                         gui(n)
+                        click = "first"
                     elif 10 < x < 30 and 520 < y < 540:
                         # if the up arrow clicked, add one to n and redraw the shapes
                         screen.blit(button_font.render(str(n), True, WHITE), (50, 520))
