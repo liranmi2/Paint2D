@@ -52,13 +52,13 @@ def dda_line(x1, y1, x2, y2, color):
 def bezier_curve(x1, y1, x2, y2, x3, y3, x4, y4, n, color):
     """Drawing a n lines Bezier curve from (x1,y1) to (x2,y2)
        according to (x3,y3) and (x4,y4) curves using dda_line function"""
-    ax = 3*x2 + x4 - 3*x3 - x1
+    ax = -x1 + 3*x2 - 3*x3 + x4
     bx = 3*x1 - 6*x2 + 3*x3
-    cx = 3*x2 - 3*x1
+    cx = -3*x1 + 3*x2
     dx = x1
-    ay = 3*y2 + y4 - 3*y3 - y1
+    ay = -y1 + 3*y2 - 3*y3 + y4
     by = 3*y1 - 6*y2 + 3*y3
-    cy = 3*y2 - 3*y1
+    cy = -3*y1 + 3*y2
     dy = y1
     t = 0
     points = list()
@@ -91,7 +91,10 @@ def draw(x1, y1, x2, y2, n):
     r = round(((x2 - x1) ** 2 + (y2 - y1) ** 2) ** 0.5 / 2)
 
     # Calculating (x3,y3) and (x4,y4) by (x1,y1), (x2,y2) and radius
-    x3, x4 = round(x2 + r / 2), round(x1 - r / 2)
+    if x1 < x2:
+        x3, x4 = round(x2 + r / 2), round(x1 - r / 2)
+    else:
+        x3, x4 = round(x2 - r / 2), round(x1 + r / 2)
     y3, y4 = y1, y2
 
     # Drawing all shapes by given points above
@@ -142,10 +145,12 @@ def main():
                     draw(x1, y1, x2, y2, n)
                     click = "modify"
                 else:
-                    if x > 480 and y > 520:
+                    if y < 520:
+                        x1, y1 = x, y
+                        click = "second"
+                    elif x > 480 and y > 520:
                         # if the clear button clicked, redraw an empty screen
                         gui(n)
-                        click = "first"
                     elif 10 < x < 30 and 520 < y < 540:
                         # if the up arrow clicked, add one to n and redraw the shapes
                         screen.blit(button_font.render(str(n), True, WHITE), (50, 520))
