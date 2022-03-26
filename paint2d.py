@@ -50,8 +50,8 @@ def dda_line(x1, y1, x2, y2, color):
 
 
 def bezier_curve(x1, y1, x2, y2, x3, y3, x4, y4, n, color):
-    """Drawing a n lines Bezier curve from (x1,y1) to (x2,y2)
-       according to (x3,y3) and (x4,y4) curves using dda_line function"""
+    """Drawing a n lines Bezier curve from (x1,y1) to (x4,y4)
+       according to (x3,y3) and (x2,y2) curves using dda_line function"""
     ax = -x1 + 3*x2 - 3*x3 + x4
     bx = 3*x1 - 6*x2 + 3*x3
     cx = -3*x1 + 3*x2
